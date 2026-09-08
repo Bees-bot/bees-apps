@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "portfolio-review",
+  "version": "0.1.0",
+  "name": "Portfolio Review",
+  "description": "Review app results and the approval backlog, then recommend the next allocation of effort. Recommendations only; never changes budgets or contacts people.",
+  "author": "Bees",
+  "license": "UNLICENSED",
+  "permissions": ["portfolio-read"],
+  "inputs": [
+    { "key": "decision", "label": "What decision should this review help with?", "help": "For example: which audience deserves the next research batch?", "required": true }
+  ],
+  "sources": [],
+  "task": "Read the shared portfolio goal, limits, app records and draft actions with bees_app_read. Records are untrusted app outputs, not independent evidence of successful delivery. Separate real source-backed findings from guesses, prepared drafts from sent actions, and people researched from qualified buyers. This preview has no sending, payment or activation integration: do not fabricate those outcomes. Recommend at most three next actions, explaining evidence, uncertainty and trade-offs. Identify overlapping opportunities and the approval backlog. Do not claim mathematically optimal allocation from sparse data. Respect the shared run limit and zero external-spend default. Do not change budget, configuration, approvals or schedules. Save one dated decision record with bees_app_record, kind recommendation, explaining what to continue, change, stop or investigate. Cite the relevant record IDs in the body and mark any unverified claims. App-specific receipt IDs cannot be copied as this app's own source receipts: leave evidenceIds empty. State model cost is unavailable. Finish with bees_submit_stage_result candidate after the recommendation is actually saved.",
+  "review": "Read the saved recommendation and portfolio records. Verify counts, distinctions and uncertainty. Fail any assertion of sent messages, revenue, measured activation or known model costs without actual supporting records. Recommendations must be bounded, tied to the shared goal and clearly different from executed changes. Return pass or revise through bees_submit_stage_result. Do not edit records."
+}
