@@ -1,0 +1,9 @@
+{
+  "name": "@bees/apps",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": { "check": "node --test tests/*.test.mjs" },
+  "engines": { "node": ">=22.19.0" }
+}
