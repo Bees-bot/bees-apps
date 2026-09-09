@@ -4,6 +4,6 @@
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
-  "scripts": { "check": "node --test tests/*.test.mjs" },
+  "scripts": { "check": "node --test tests/*.test.mjs", "build:catalog": "node scripts/publish-catalog.mjs" },
   "engines": { "node": ">=22.19.0" }
 }

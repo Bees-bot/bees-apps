@@ -1,6 +1,6 @@
 # Bees app contract v1
 
-Status: local preview. A package is one UTF-8 JSON file, at most 64 KB. The host
+Status: declarative preview for local and connected workspaces. A package is one UTF-8 JSON file, at most 64 KB. The host
 validates the entire package again at installation. Unknown fields are rejected.
 The desktop validator and runtime, not the package's instructions, enforce access.
 
@@ -55,13 +55,14 @@ remain app-scoped; receipt IDs from a different installation are rejected.
 
 ## Installation lifecycle
 
-Import → inspect → configure → install → run once → optionally schedule.
+Browse directory → inspect → install → configure → run once → optionally schedule.
 
 The host records package digest, exact manifest, configuration, agent IDs and
 process ID. Reinstalling identical active content reuses the installation.
 Partial installs expose a repair action. Content cannot silently change under
-an installed version. Remove before changing versions; work must be settled and
-schedules paused. Records survive removal. Older process versions remain denied.
+an installed version. Updates require an explicit approval, showing added access;
+work must be settled and schedules paused. Records survive updates and removal.
+Older process versions remain denied; new versions start with schedules off.
 Copying app-owned processes is blocked so a copy cannot lose its app restrictions.
 Generic runtime storage is private and not part of the public package.
 
@@ -73,13 +74,18 @@ stored action digest and pending state, are attributed to the current user,
 and expire after 48 hours. An active destination cannot have competing draft
 actions in the same workspace. Suppression cancels its pending/approved drafts.
 
-Budget reservations and approval transitions share one SQLite transaction.
+Budget reservations and approval transitions share one SQLite transaction in
+local workspaces. In connected workspaces, a server-authoritative revision/CAS
+commit serializes decisions, run admissions, source-request reservations and
+configuration. Work is attributed to the selected account. App execution and
+schedule occurrence claims are shared across team members and devices. An
+available signed-in desktop worker is still required; this is not cloud hosting.
 This ledger does not control model-provider invoices or remote ads, and there
 is deliberately no external executor yet. Never interpret `approved` as `sent`.
 
 ## Deliberately not implemented
 
-Executable third-party plugins, multi-host app state, arbitrary app UIs,
+Executable third-party plugins, arbitrary app UIs,
 automatic in-place upgrades, marketplace billing, publisher payouts, hosted
 workers, CRM synchronization and paid/sending connectors. These need separately
 tested contracts rather than unchecked manifest flags.
