@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "apps": [
+    {
+      "id": "opportunity-scout",
+      "version": "0.1.0",
+      "name": "Opportunity Scout",
+      "description": "Find public demand signals for your product, explain the evidence, and prepare a useful next step. Starts with Hacker News discussions; no lead CSV required.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "public-sources",
+        "draft-actions"
+      ],
+      "sources": [
+        {
+          "key": "hn-search",
+          "label": "Hacker News search, powered by Algolia",
+          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10",
+          "queryParam": "query"
+        }
+      ],
+      "schemaVersion": 1,
+      "path": "packages/b8887c8a72985ef813df66b8777684cba9bc5a9d1bdf47e84bd103750b60b3f4.json",
+      "sha256": "b8887c8a72985ef813df66b8777684cba9bc5a9d1bdf47e84bd103750b60b3f4"
+    },
+    {
+      "id": "portfolio-review",
+      "version": "0.1.0",
+      "name": "Portfolio Review",
+      "description": "Review app results and the approval backlog, then recommend the next allocation of effort. Recommendations only; never changes budgets or contacts people.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "portfolio-read"
+      ],
+      "sources": [],
+      "schemaVersion": 1,
+      "path": "packages/66abc3f42d188f38d9732ac649b36352ecc5647745e762ccc62c507edbb0c1a1.json",
+      "sha256": "66abc3f42d188f38d9732ac649b36352ecc5647745e762ccc62c507edbb0c1a1"
+    }
+  ]
+}
