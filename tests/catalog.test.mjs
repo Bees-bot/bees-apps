@@ -1,4 +1,7 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { readFileSync, readdirSync, mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from 'node:os';
+import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { resolve } from "node:path";
 import assert from "node:assert/strict";
 import test from "node:test";
@@ -27,4 +30,21 @@ test("optional integration: packages satisfy the actual Bees host contract", { s
   const { pathToFileURL } = await import("node:url");
   const contract = await import(pathToFileURL(resolve(process.env.BEES_DESKTOP_DIR, "dsh-runtime/plugin/lib/app-contract.js")));
   for (const entry of catalog.apps) contract.validateApp(JSON.parse(readFileSync(new URL(entry.path, root))));
+});
+
+test('publish artifact contains reviewed apps and checksum-addressed packages only', () => {
+  const output = mkdtempSync(resolve(tmpdir(), 'bees-catalog-test-'));
+  try {
+    execFileSync(process.execPath, [new URL('../scripts/publish-catalog.mjs', import.meta.url).pathname, output]);
+    const published = JSON.parse(readFileSync(resolve(output, 'catalog.json')));
+    assert.equal(published.apps.length, catalog.apps.filter((a) => ['first-party-preview', 'community-reviewed'].includes(a.status)).length);
+    for (const entry of published.apps) {
+      assert.equal(entry.path, `packages/${entry.sha256}.json`);
+      const bytes = readFileSync(resolve(output, entry.path));
+      assert.equal(createHash('sha256').update(bytes).digest('hex'), entry.sha256);
+      const manifest = JSON.parse(bytes);
+      for (const key of ['id', 'version', 'permissions', 'sources']) assert.deepEqual(entry[key], manifest[key]);
+    }
+    assert.deepEqual(readdirSync(output).sort(), ['catalog.json', 'packages']);
+  } finally { rmSync(output, { recursive: true }); }
 });
