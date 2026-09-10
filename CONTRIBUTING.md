@@ -7,6 +7,9 @@ Start from a complete customer job, not an agent title or a single marketing tac
    actual customers, private conversations, install hooks or executable code.
 3. Specify what a useful result looks like, how it is checked, when to stop, and
    how to report zero findings or unavailable sources honestly.
+   For v2, declare primitive `recordTypes` and narrow public page-source scopes;
+   keep domain-specific field names in the package, not the host. A record status
+   must never stand in for an authoritative approval, connection or receipt.
 4. Add the package to `catalog.json` with status `community-unreviewed`.
 5. Run `npm run check`, install in a fresh local Bees workspace, and run once.
    Test a second installation, denied external actions, source failure and removal.
@@ -27,6 +30,11 @@ contribution policy before acceptance.
   credentials out of contributor CI and never execute code from PR descriptions.
 - Review every changed release. Publish a pinned version/digest; never silently
   substitute changed content under the same version.
+- Check current platform rules. Human approval is not permission to publish
+  generated content where the destination prohibits it. Test action-level
+  reviewer decisions, suppression and expired/changed approvals separately from
+  normal work-stage review. Only a separately selected, tested host connector can
+  execute an approved action; a package must not smuggle in a connector or credentials.
 - Distinguish `first-party-preview`, `community-unreviewed` and
   `community-reviewed`. A review label is not a security guarantee.
 - Keep reporting/removal instructions in the PR and release notes. Deprecate

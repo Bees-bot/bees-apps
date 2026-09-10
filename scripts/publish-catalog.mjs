@@ -14,13 +14,14 @@ for (const entry of source.apps) {
   if (entry.path !== `apps/${entry.id}/app.json`) throw new Error('Invalid catalog path');
   const bytes = await readFile(resolve(root, entry.path));
   const manifest = JSON.parse(bytes);
-  if (manifest.id !== entry.id || manifest.schemaVersion !== 1) throw new Error('Invalid app package');
+  if (manifest.id !== entry.id || ![1, 2].includes(manifest.schemaVersion)) throw new Error('Invalid app package');
   const sha256 = createHash('sha256').update(bytes).digest('hex');
   const path = `packages/${sha256}.json`;
   await writeFile(resolve(output, path), bytes);
   apps.push({ id: manifest.id, version: manifest.version, name: manifest.name,
     description: manifest.description, author: manifest.author, license: manifest.license,
-    permissions: manifest.permissions, sources: manifest.sources, schemaVersion: manifest.schemaVersion, path, sha256 });
+    permissions: manifest.permissions, sources: manifest.sources, schemaVersion: manifest.schemaVersion,
+    ...(manifest.recordTypes ? { recordTypes: manifest.recordTypes } : {}), path, sha256 });
 }
 await writeFile(resolve(output, 'catalog.json'), JSON.stringify({ schemaVersion: 1, apps }, null, 2) + '\n');
 console.log(`Built ${apps.length} app packages and catalog.json in ${output}`);

@@ -10,8 +10,9 @@ storage, permissions and human decisions. No app imports the desktop's internals
 |---|---|---|
 | [Opportunity Scout](apps/opportunity-scout/app.json) | Source-backed public demand signals and appropriate next steps | Hacker News search initially; never requires an uploaded lead CSV |
 | [Portfolio Review](apps/portfolio-review/app.json) | Recommendations using the shared goal, results and approval backlog | Read access to other app results in the same workspace; no automatic reallocations |
+| [Marketing Operations](apps/marketing-operations/app.json) | Ranked practical ideas, source-backed opportunities, campaign records and exact drafts | v2 typed records; scoped HN/n8n research, one bounded job, no private seed data or connected sending channel |
 
-These are research/draft-only previews, not a working email sender, paid ad
+These are research/draft-first previews, not a working email sender, paid ad
 manager, autonomous sales department or a claim of paying customers. No
 campaigns, schedules, public messages or paid services are activated by installing.
 
@@ -34,10 +35,13 @@ the changes can build the client and run the app using its normal development st
    work item. The machine and runtime must be available. Installation creates no schedules.
 
 **Your approval queue lives in Apps.** Every draft includes destination, sender,
-exact content, rationale and proposed commitment. Approving records a 48-hour
-decision, not delivery. This release intentionally has no sending or payment
-connector. A future executor must verify the approval digest, expiry, scope,
-suppression and budget again before any external action.
+exact content, rationale and proposed commitment. Independent review checks each
+exact action before the designated human can approve it. Approving records a
+48-hour decision, not delivery. The matching host has a generic claim/dispatch/
+receipt contract; no production sending channel or account is connected by an
+app package. Dispatch must recheck the approval digest, reviewer decision,
+expiry, scope, suppression and budget. Provider acceptance is not confirmed
+recipient delivery. Paid actions remain unavailable in these apps.
 
 The portfolio starts at $0 external commitments, five new app work items per
 UTC day and at most five waiting drafts. One work item has at most 20 public
@@ -47,14 +51,17 @@ are credential-free HTTPS GETs; no redirects or private-network destinations.
 
 ## Boundaries and current limitations
 
-- v1 is declarative JSON: no JavaScript hooks, shell access, arbitrary MCP tools,
-  signed-in browsers, private team-folder access or automatic tool installation.
+- v1 and v2 are declarative JSON: no JavaScript hooks, shell access, arbitrary MCP
+  tools, signed-in browsers, private team-folder access or automatic tool installation.
+  v2 adds primitive record schemas and declared-origin public page reads; it does
+  not grant unrestricted browsing or sending. See the [marketing guide](docs/marketing-operations.md).
 - Results and source receipts persist across runs. Record keys deduplicate within
   an installation. Active action destinations and suppressions are checked across
   the workspace. Identity resolution across different URLs/emails is not inferred.
 - Portfolio review is recommendations only. It does not start other apps or change budgets.
-- The USD commitment ledger reserves approved draft amounts atomically. There is
-  no provider charge reconciliation, delivery history or payment collection yet.
+- The USD commitment ledger reserves approved draft amounts atomically. Generic
+  action receipts are not provider charge reconciliation or payment collection.
+  No production delivery history exists merely because the app was installed.
 - Local workspace app data stays in SQLite. Connected workspace configuration,
   results, source receipts, drafts, decisions and portfolio limits are stored on
   the workspace server and cached on each authorized device. Do not put secrets
@@ -72,8 +79,9 @@ are credential-free HTTPS GETs; no redirects or private-network destinations.
 - Apps may read only their own records unless `portfolio-read` is explicitly
   granted at installation. That grant covers the selected workspace, not other customers.
 - Hacker News results are source evidence, not verified buyers or permission to
-  contact people. This source cannot verify every community's posting rules;
-  unresolved cases remain research briefs, not ready-to-send drafts.
+  contact people. HN prohibits generated and AI-edited comments, so these apps use
+  it for research, not AI-authored replies. Other communities' unchecked rules
+  keep their results as research briefs, not ready-to-send drafts.
 
 ## Development and contributions
 
@@ -85,7 +93,11 @@ BEES_DESKTOP_DIR=/absolute/path/to/bees-desktop npm run check
 ```
 
 The second command additionally checks packages against the actual desktop
-validator. See [the app contract](docs/app-contract.md) and
+validator and runs an in-memory Marketing Operations host smoke test. The latter
+uses the actual manifest, native agents/process/work records and import/query
+paths, with model execution and public reads stubbed out; it creates no live
+workspace, schedule or action. The sibling desktop's dependencies must already
+be available. See [the app contract](docs/app-contract.md) and
 [contribution guide](CONTRIBUTING.md). No separate marketplace server is needed.
 
 ## Build and host the dynamic directory
