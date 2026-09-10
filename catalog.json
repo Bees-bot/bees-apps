@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "apps": [
     { "id": "opportunity-scout", "path": "apps/opportunity-scout/app.json", "status": "first-party-preview" },
-    { "id": "portfolio-review", "path": "apps/portfolio-review/app.json", "status": "first-party-preview" }
+    { "id": "portfolio-review", "path": "apps/portfolio-review/app.json", "status": "first-party-preview" },
+    { "id": "marketing-operations", "path": "apps/marketing-operations/app.json", "status": "first-party-preview" }
   ]
 }
