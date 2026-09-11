@@ -3,7 +3,7 @@
   "apps": [
     {
       "id": "opportunity-scout",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "name": "Opportunity Scout",
       "description": "Find public demand signals for your product, explain the evidence, and prepare a useful next step. Starts with Hacker News discussions; no lead CSV required.",
       "author": "Bees",
@@ -21,8 +21,8 @@
         }
       ],
       "schemaVersion": 1,
-      "path": "packages/b8887c8a72985ef813df66b8777684cba9bc5a9d1bdf47e84bd103750b60b3f4.json",
-      "sha256": "b8887c8a72985ef813df66b8777684cba9bc5a9d1bdf47e84bd103750b60b3f4"
+      "path": "packages/81f60e0a79cdbf54833269ee0f04ee887a701f75173e039dc799893b9e09f35a.json",
+      "sha256": "81f60e0a79cdbf54833269ee0f04ee887a701f75173e039dc799893b9e09f35a"
     },
     {
       "id": "portfolio-review",
@@ -38,6 +38,526 @@
       "schemaVersion": 1,
       "path": "packages/66abc3f42d188f38d9732ac649b36352ecc5647745e762ccc62c507edbb0c1a1.json",
       "sha256": "66abc3f42d188f38d9732ac649b36352ecc5647745e762ccc62c507edbb0c1a1"
+    },
+    {
+      "id": "marketing-operations",
+      "version": "0.1.0",
+      "name": "Marketing Operations",
+      "description": "Run a small, evidence-backed marketing portfolio: explain and rank ideas, source real opportunities, organize campaigns and prepare exact actions for human approval. Includes scoped Hacker News and n8n practitioner research; never requires a lead CSV.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "public-sources",
+        "draft-actions"
+      ],
+      "sources": [
+        {
+          "key": "hn-search",
+          "label": "Public Hacker News search via Algolia",
+          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10",
+          "queryParam": "query"
+        },
+        {
+          "key": "hn-discussion",
+          "label": "Original Hacker News discussion pages",
+          "url": "https://news.ycombinator.com",
+          "type": "page",
+          "pathPrefix": "/item"
+        },
+        {
+          "key": "hn-rules",
+          "label": "Hacker News participation guidelines",
+          "url": "https://news.ycombinator.com",
+          "type": "page",
+          "pathPrefix": "/newsguidelines.html"
+        },
+        {
+          "key": "bees-pricing",
+          "label": "Bees public pricing and cost limitations",
+          "url": "https://bees.bot",
+          "type": "page",
+          "pathPrefix": "/pricing/"
+        },
+        {
+          "key": "n8n-search",
+          "label": "Public n8n Community discussion search",
+          "url": "https://community.n8n.io/search.json",
+          "queryParam": "q"
+        },
+        {
+          "key": "n8n-topics",
+          "label": "Original public n8n Community topics",
+          "url": "https://community.n8n.io",
+          "type": "page",
+          "pathPrefix": "/t/"
+        },
+        {
+          "key": "n8n-guidelines",
+          "label": "n8n Community participation guidelines",
+          "url": "https://community.n8n.io",
+          "type": "page",
+          "pathPrefix": "/guidelines"
+        },
+        {
+          "key": "n8n-workflows",
+          "label": "Public n8n workflow descriptions and author attribution",
+          "url": "https://n8n.io",
+          "type": "page",
+          "pathPrefix": "/workflows/"
+        }
+      ],
+      "schemaVersion": 2,
+      "recordTypes": [
+        {
+          "key": "campaign",
+          "label": "Campaigns",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Status",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "category",
+              "label": "Acquisition or activation",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "objective",
+              "label": "Useful outcome",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "audience",
+              "label": "Audience hypothesis",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "channel",
+              "label": "Channel",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "source-plan",
+              "label": "Where and how to source",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "qualification",
+              "label": "Who qualifies and why",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "offer",
+              "label": "Appropriate next step",
+              "type": "text"
+            },
+            {
+              "key": "success-metric",
+              "label": "Success measure",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "stop-rule",
+              "label": "Stop or reconsider when",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "idea-key",
+              "label": "Originating idea key",
+              "type": "text"
+            },
+            {
+              "key": "review-date",
+              "label": "Review date",
+              "type": "text"
+            },
+            {
+              "key": "weekly-minutes",
+              "label": "Estimated weekly human minutes",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "key": "opportunity",
+          "label": "Opportunities",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Status",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "role",
+              "label": "Buyer, practitioner, creator or adjacent vendor",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "canonical-url",
+              "label": "Original public source",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "source-date",
+              "label": "Source date or unknown",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "observed-at",
+              "label": "Research observation time",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "evidence-summary",
+              "label": "What was actually observed",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "qualification",
+              "label": "Fit and buying intent",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "uncertainty",
+              "label": "What remains unverified",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "campaign-key",
+              "label": "Campaign key",
+              "type": "text"
+            },
+            {
+              "key": "next-action",
+              "label": "Specific next step",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "contact-route",
+              "label": "Verified appropriate contact route",
+              "type": "text"
+            },
+            {
+              "key": "rules-url",
+              "label": "Checked participation rules",
+              "type": "text"
+            },
+            {
+              "key": "identity-key",
+              "label": "Evidence-backed identity key",
+              "type": "text"
+            }
+          ]
+        },
+        {
+          "key": "idea",
+          "label": "Ideas and priorities",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Proposed, active, parked or needs clarification",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "eli5",
+              "label": "Explain it simply",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "source-plan",
+              "label": "Where the next real prospect comes from",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "manual-steps",
+              "label": "How to do it manually",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "bees-prompt",
+              "label": "Bounded Ask Bees prompt",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "automation-mode",
+              "label": "Available automation and missing capabilities",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "open-source-option",
+              "label": "Optional code or open-source alternative",
+              "type": "text"
+            },
+            {
+              "key": "speed-score",
+              "label": "Speed 1–5, higher is faster",
+              "type": "number"
+            },
+            {
+              "key": "cost-score",
+              "label": "Affordability 1–5, higher is cheaper",
+              "type": "number"
+            },
+            {
+              "key": "value-score",
+              "label": "Expected useful value 1–5",
+              "type": "number"
+            },
+            {
+              "key": "confidence",
+              "label": "Evidence confidence 0–1",
+              "type": "number"
+            },
+            {
+              "key": "priority-score",
+              "label": "Confidence-adjusted priority 0–100",
+              "type": "number"
+            },
+            {
+              "key": "score-rationale",
+              "label": "Assumptions behind the scores",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "dependencies",
+              "label": "Missing information and prerequisites",
+              "type": "text"
+            },
+            {
+              "key": "success-metric",
+              "label": "What we will measure",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "campaign-key",
+              "label": "Campaign key if selected",
+              "type": "text"
+            },
+            {
+              "key": "effort-minutes",
+              "label": "Estimated initial human minutes",
+              "type": "number"
+            },
+            {
+              "key": "external-cost-cents",
+              "label": "Estimated new external cost in USD cents",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "key": "content",
+          "label": "Content and conversation drafts",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Draft or needs checks",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "campaign-key",
+              "label": "Campaign key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "opportunity-key",
+              "label": "Opportunity key if targeted",
+              "type": "text"
+            },
+            {
+              "key": "channel",
+              "label": "Channel",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Proposed destination",
+              "type": "text"
+            },
+            {
+              "key": "sender",
+              "label": "Existing sender",
+              "type": "text"
+            },
+            {
+              "key": "content-type",
+              "label": "Reply, interview request, article or other",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "manual-steps",
+              "label": "Exact manual execution steps after approval",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "assumptions",
+              "label": "Checks still needed before use",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "action-reference",
+          "label": "Native action references",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Observed native action status, never authorization",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "campaign-key",
+              "label": "Campaign key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "opportunity-key",
+              "label": "Opportunity key",
+              "type": "text"
+            },
+            {
+              "key": "content-key",
+              "label": "Content key",
+              "type": "text"
+            },
+            {
+              "key": "destination",
+              "label": "Exact destination",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "outcome",
+          "label": "Observed outcomes",
+          "fields": [
+            {
+              "key": "campaign-key",
+              "label": "Campaign key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID if applicable",
+              "type": "text"
+            },
+            {
+              "key": "event",
+              "label": "Observed event",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "observed-at",
+              "label": "Event observation time",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "evidence-url",
+              "label": "Evidence location if available",
+              "type": "text"
+            },
+            {
+              "key": "value",
+              "label": "Measured value if known",
+              "type": "number"
+            },
+            {
+              "key": "verification",
+              "label": "Verified, self-reported or unknown",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "research-summary",
+          "label": "Run summaries and blockers",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completed, partial or needs information",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "query-set",
+              "label": "Actual research queries",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "stop-reason",
+              "label": "Why this batch stopped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "new-opportunities",
+              "label": "New source-backed opportunities",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "blockers",
+              "label": "Missing capability, information or evidence",
+              "type": "text"
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest useful next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "path": "packages/60aeaa19ff360c6aef78fb215384cf15597d60c4d1969e5ef02ea28247212d12.json",
+      "sha256": "60aeaa19ff360c6aef78fb215384cf15597d60c4d1969e5ef02ea28247212d12"
     }
   ]
 }
