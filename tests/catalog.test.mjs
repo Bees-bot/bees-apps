@@ -151,7 +151,7 @@ test('marketing package declares practical records without seeding private campa
   assert.equal(app.sources.length, 12);
   assert.deepEqual(app.sources.find((source) => source.key === 'n8n-search'), {
     key: 'n8n-search', label: 'Public n8n Community discussion search',
-    url: 'https://community.n8n.io/search.json', queryParam: 'q',
+    url: 'https://community.n8n.io/search/query', queryParam: 'term',
   });
   for (const [key, prefix] of [['n8n-topics', '/t/'], ['n8n-guidelines', '/guidelines'], ['n8n-workflows', '/workflows/'], ['reddit-threads', '/r/'], ['github-repos', '/repos/']]) {
     assert.equal(app.sources.find((source) => source.key === key)?.pathPrefix, prefix);

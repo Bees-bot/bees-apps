@@ -72,10 +72,13 @@ original discussion and distinguishes firsthand pain from vendor promotion.
 It records fewer than five prospects or none when that is what the evidence supports.
 
 For a relevant automation/practitioner hypothesis, the public n8n search endpoint
-is `https://community.n8n.io/search.json` with the `q` query parameter. A
+is `https://community.n8n.io/search/query` with the `term` query parameter. A
 credential-free GET with a sample problem query returned HTTP 200 and JSON
-`posts`/`topics` during development on 9 September 2026. This verifies that route
-was reachable, not that a Bees runtime run or future request will succeed. The
+`posts`/`topics` during development on 9 September 2026, rechecked on 18 September
+2026. This verifies that route was reachable, not that a Bees runtime run or
+future request will succeed. The wider `/search.json` route answers the same query
+with fifty results in 65 KB, which pushes the `topics` list past the readable
+limit and leaves the app unable to build a single topic URL. The
 app joins the returned post/topic IDs, reads the original `/t/` page and checks
 the [community guidelines](https://community.n8n.io/guidelines). Replies must add
 relevant substance without spam, cross-posting, signatures or hijacking the
