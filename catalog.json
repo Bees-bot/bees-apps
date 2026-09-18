@@ -41,9 +41,9 @@
     },
     {
       "id": "marketing-operations",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "name": "Marketing Operations",
-      "description": "Run a small, evidence-backed marketing portfolio: explain and rank ideas, source real opportunities, organize campaigns and prepare exact actions for human approval. Includes scoped Hacker News and n8n practitioner research; never requires a lead CSV.",
+      "description": "Run a small, evidence-backed marketing portfolio: explain and rank ideas, source real opportunities, organize campaigns and prepare exact actions for human approval. Researches Reddit, Hacker News, Stack Overflow, GitHub and n8n practitioner discussions; never requires a lead CSV.",
       "author": "Bees",
       "license": "UNLICENSED",
       "permissions": [
@@ -104,6 +104,32 @@
           "url": "https://n8n.io",
           "type": "page",
           "pathPrefix": "/workflows/"
+        },
+        {
+          "key": "reddit-search",
+          "label": "Public Reddit search feed",
+          "url": "https://www.reddit.com/search.rss?sort=new&limit=10",
+          "queryParam": "q"
+        },
+        {
+          "key": "reddit-threads",
+          "label": "Original public Reddit threads",
+          "url": "https://www.reddit.com",
+          "type": "page",
+          "pathPrefix": "/r/"
+        },
+        {
+          "key": "stack-search",
+          "label": "Public Stack Overflow question search",
+          "url": "https://api.stackexchange.com/2.3/search/advanced?site=stackoverflow&pagesize=10&order=desc&sort=activity",
+          "queryParam": "q"
+        },
+        {
+          "key": "github-repos",
+          "label": "Public GitHub repository issues and comments",
+          "url": "https://api.github.com",
+          "type": "page",
+          "pathPrefix": "/repos/"
         }
       ],
       "schemaVersion": 2,
@@ -556,8 +582,8 @@
           ]
         }
       ],
-      "path": "packages/60aeaa19ff360c6aef78fb215384cf15597d60c4d1969e5ef02ea28247212d12.json",
-      "sha256": "60aeaa19ff360c6aef78fb215384cf15597d60c4d1969e5ef02ea28247212d12"
+      "path": "packages/9f8aa102bfdce7a332d24fb0bc8531f45c1ed0cd563beff70574f74f90cdbe08.json",
+      "sha256": "9f8aa102bfdce7a332d24fb0bc8531f45c1ed0cd563beff70574f74f90cdbe08"
     }
   ]
 }
