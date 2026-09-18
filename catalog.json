@@ -41,7 +41,7 @@
     },
     {
       "id": "marketing-operations",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "name": "Marketing Operations",
       "description": "Run a small, evidence-backed marketing portfolio: explain and rank ideas, source real opportunities, organize campaigns and prepare exact actions for human approval. Researches Reddit, Hacker News, Stack Overflow, GitHub and n8n practitioner discussions; never requires a lead CSV.",
       "author": "Bees",
@@ -582,8 +582,8 @@
           ]
         }
       ],
-      "path": "packages/d59f2ba2cc83362585861b9a8083ccb136131c2e2d376fa13e5e474939f55282.json",
-      "sha256": "d59f2ba2cc83362585861b9a8083ccb136131c2e2d376fa13e5e474939f55282"
+      "path": "packages/def151457c471033be8be237bcca5b55ec7494d5d98bdce4b8db5b0b1bb8b17c.json",
+      "sha256": "def151457c471033be8be237bcca5b55ec7494d5d98bdce4b8db5b0b1bb8b17c"
     }
   ]
 }
