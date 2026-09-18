@@ -81,8 +81,10 @@ the [community guidelines](https://community.n8n.io/guidelines). Replies must ad
 relevant substance without spam, cross-posting, signatures or hijacking the
 topic. Check applicable category rules too; incomplete checks keep a draft held.
 
-The [workflow directory](https://n8n.io/workflows/) and observed pages under
-`/workflows/` can identify an attributed practitioner's work. They are not proof
+A workflow page under `/workflows/` can identify an attributed practitioner's
+work, but only when its full URL already appeared in an in-scope discussion. The
+directory root and its category listings are browser-rendered, carry no template
+links and exceed the page size limit, so the app never requests them. They are not proof
 of buyer intent, customer results or a permission to contact the author. The app
 does not purchase or execute templates, guess masked contacts or follow links
 beyond its declared scopes. A source error or access challenge is reported as a
