@@ -148,12 +148,12 @@ test('marketing package declares practical records without seeding private campa
   }
   assert.equal(app.inputs.find((input) => input.key === 'sender')?.required, false);
   assert.equal(app.inputs.some((input) => /csv|password|token|credential|lead-list/.test(input.key)), false);
-  assert.equal(app.sources.length, 8);
+  assert.equal(app.sources.length, 12);
   assert.deepEqual(app.sources.find((source) => source.key === 'n8n-search'), {
     key: 'n8n-search', label: 'Public n8n Community discussion search',
     url: 'https://community.n8n.io/search.json', queryParam: 'q',
   });
-  for (const [key, prefix] of [['n8n-topics', '/t/'], ['n8n-guidelines', '/guidelines'], ['n8n-workflows', '/workflows/']]) {
+  for (const [key, prefix] of [['n8n-topics', '/t/'], ['n8n-guidelines', '/guidelines'], ['n8n-workflows', '/workflows/'], ['reddit-threads', '/r/'], ['github-repos', '/repos/']]) {
     assert.equal(app.sources.find((source) => source.key === key)?.pathPrefix, prefix);
   }
   assert.deepEqual(readdirSync(new URL('apps/marketing-operations/', root)), ['app.json']);

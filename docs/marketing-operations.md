@@ -55,17 +55,18 @@ execution. The app cannot mark itself approved or sent.
    follow-up, submission, post or commitment needs its own exact approval.
 
 The package has no automatic recurring run or cloud worker. Existing host limits
-apply in addition to the app's smaller batch: at most three search phrases, five
-new source-backed opportunities, three changed/new ideas and two proposed action
-drafts. These prompt-level batch targets do not replace host-enforced quotas.
+apply in addition to the app's smaller batch: at most twenty public source
+requests, five search phrases, six new source-backed opportunities, four
+changed/new ideas and two proposed action drafts. These prompt-level batch targets do not replace host-enforced quotas.
 New external spend stays at $0. Model usage can still incur provider costs and
 is not assumed to be measured or capped by that policy.
 
 ## Initial sourcing, honestly scoped
 
-The eight included source grants permit Hacker News search, original discussion
+The twelve included source grants permit Hacker News search, original discussion
 pages and guidelines; n8n Community search, original topics and guidelines; n8n
-workflow-description pages; and the Bees pricing page. The app chooses sources
+workflow-description pages; the Bees pricing page; Reddit search and original
+threads; Stack Overflow question search; and public GitHub repository issues. The app chooses sources
 that fit the actual product/audience, searches for specific problems, opens the
 original discussion and distinguishes firsthand pain from vendor promotion.
 It records fewer than five prospects or none when that is what the evidence supports.
@@ -87,6 +88,19 @@ does not purchase or execute templates, guess masked contacts or follow links
 beyond its declared scopes. A source error or access challenge is reported as a
 blocker, not bypassed. n8n is an audience hypothesis, not a universal fit for all
 products or permission for generic product promotion.
+
+Reddit, Stack Overflow and GitHub are research-only. This package cannot read a
+subreddit's or a repository's participation rules, and an unread rule is not
+permission, so it never drafts a reply, comment or message for those three sites.
+Reddit search is the public `search.rss` Atom feed and accepts `subreddit:NAME`
+scoping; the original thread is read as `<permalink>.rss`, because a feed blurb
+is not the discussion. Reddit rate-limits this package hard, so a run budgets one
+search and two thread reads and records an HTTP 403 or 429 as a blocker instead
+of retrying. Stack Overflow uses the public `/2.3/search/advanced` endpoint on
+`site=stackoverflow`, which shows practitioner activity, not buying intent.
+GitHub is limited to `api.github.com/repos/OWNER/NAME/` for a repository already
+named in an in-scope discussion; a firsthand issue describing a blocked real
+workflow is stronger evidence than stars or a repository description.
 
 Hacker News currently prohibits generated and AI-edited comments. This app uses
 HN for research, not automated replies or copy-paste outreach. A human who
