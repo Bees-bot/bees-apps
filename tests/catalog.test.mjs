@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync, mkdtempSync, rmSync } from "node:fs";
+import { readFileSync, readdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from 'node:os';
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -56,7 +56,7 @@ test("optional integration: packages satisfy the actual Bees host contract", { s
   for (const entry of catalog.apps) contract.validateApp(JSON.parse(readFileSync(new URL(entry.path, root))));
 });
 
-test('optional integration: Marketing Operations installs, configures and stores records in the actual host without execution', { skip: !process.env.BEES_DESKTOP_DIR }, async () => {
+test('optional integration: Help Requests installs, configures and stores records in the actual host without execution', { skip: !process.env.BEES_DESKTOP_DIR }, async () => {
   const { pathToFileURL } = await import('node:url');
   const { DatabaseSync } = await import('node:sqlite');
   const host = (path) => import(pathToFileURL(resolve(process.env.BEES_DESKTOP_DIR, 'dsh-runtime/plugin/lib', path)));
@@ -64,7 +64,11 @@ test('optional integration: Marketing Operations installs, configures and stores
     host('product.js'), host('agent-runtime.js'), host('app-platform.js'),
   ]);
   const db = new DatabaseSync(':memory:');
-  const workspace = mkdtempSync(resolve(tmpdir(), 'bees-marketing-smoke-'));
+  const workspace = mkdtempSync(resolve(tmpdir(), 'bees-app-smoke-'));
+  // the host reads its data folders and device id from the environment Tauri sets
+  process.env.BEES_APP_DATA = process.env.BEES_DATA_DIR = process.env.BEES_STATE_DIR = workspace;
+  process.env.BEES_DATABASE_PATH = resolve(workspace, 'bees-stage1.db');
+  writeFileSync(resolve(workspace, 'device-id'), 'smoke-test-device');
   try {
     initializeProductDatabase(db);
     const runtime = new AgentRuntime({ on: () => () => undefined, tools: { schemas: () => [] },
@@ -75,7 +79,7 @@ test('optional integration: Marketing Operations installs, configures and stores
     const apps = new AppPlatform(product, async () => { sourceRequests++; throw new Error('No live sources in the smoke test'); });
     runtime.apps = apps;
     const workspaceId = db.prepare('SELECT id FROM workspaces LIMIT 1').get().id;
-    const manifest = JSON.parse(readFileSync(new URL('apps/marketing-operations/app.json', root)));
+    const manifest = JSON.parse(readFileSync(new URL('apps/help-requests/app.json', root)));
     const installed = await apps.command({ action: 'install', workspaceId, manifest });
     assert.equal(installed.schedulesCreated, 0);
     assert.equal(installed.agentIds.length, 2);
@@ -85,18 +89,17 @@ test('optional integration: Marketing Operations installs, configures and stores
     assert.equal(db.prepare('SELECT COUNT(*) AS count FROM stage_routes WHERE stage_id IN (SELECT id FROM stages WHERE process_id=?)').get(installed.processId).count, 2);
     const command = (action, input = {}) => apps.command({ action, workspaceId, installationId: installed.id, ...input });
     await assert.rejects(command('run'), /product/i);
-    const config = { product: 'Fictional offline fixture; no real product claims.', goal: 'Verify one local record round-trip.', readiness: 'Unknown; no public invitation.' };
+    const config = { product: 'Fictional offline fixture; no real product claims.', readiness: 'Unknown; no public invitation.' };
     await command('configure', { config });
     const work = await command('run');
     const context = apps.context(work.id);
-    assert.deepEqual(context.config, { ...config, audience: '', 'approved-campaigns': '', queries: '', sender: '' });
+    assert.deepEqual(context.config, { ...config, sender: '', queries: '' });
     assert.equal(db.prepare('SELECT process_id FROM work_items WHERE id=?').get(work.id).process_id, installed.processId);
-    const record = { key: 'fixture-campaign', kind: 'campaign', title: 'Fictional offline test', body: 'Synthetic smoke-test record; not a real campaign.',
-      data: { status: 'proposed', category: 'acquisition', objective: 'Verify local record plumbing', audience: 'Fictional fixture audience',
-        channel: 'offline-test', 'source-plan': 'No sources; fixture only', qualification: 'No prospects included',
-        'success-metric': 'One record round-trip', 'stop-rule': 'Stop after this dry test' } };
+    const record = { key: 'request:fixture', kind: 'request', title: 'Fictional offline test', body: 'Synthetic smoke-test record; not a real request.',
+      data: { status: 'skipped', venue: 'offline-test', 'canonical-url': 'https://example.invalid/fixture', 'source-date': 'unknown',
+        'observed-at': 'unknown', question: 'None; fixture only', fit: 'None', uncertainty: 'Everything', 'next-action': 'Stop after this dry test' } };
     apps.record(context, work.id, record);
-    const page = apps.queryRecords(context, { kind: 'campaign', key: record.key });
+    const page = apps.queryRecords(context, { kind: 'request', key: record.key });
     assert.equal(page.total, 1);
     assert.deepEqual(page.records[0].data, record.data);
     assert.equal(page.records[0].provenance, 'agent');
@@ -130,35 +133,4 @@ test('publish artifact contains reviewed apps and checksum-addressed packages on
     }
     assert.deepEqual(readdirSync(output).sort(), ['catalog.json', 'packages']);
   } finally { rmSync(output, { recursive: true }); }
-});
-
-test('marketing package declares practical records without seeding private campaign data', () => {
-  const app = JSON.parse(readFileSync(new URL('apps/marketing-operations/app.json', root)));
-  assert.equal(app.schemaVersion, 2);
-  assert.deepEqual(app.permissions, ['public-sources', 'draft-actions']);
-  assert.deepEqual(app.recordTypes.map((type) => type.key), ['campaign', 'opportunity', 'idea', 'content', 'action-reference', 'outcome', 'research-summary']);
-  const idea = app.recordTypes.find((type) => type.key === 'idea');
-  for (const key of ['eli5', 'source-plan', 'manual-steps', 'bees-prompt', 'automation-mode', 'score-rationale', 'success-metric']) {
-    assert.equal(idea.fields.find((field) => field.key === key)?.required, true);
-  }
-  for (const key of ['speed-score', 'cost-score', 'value-score', 'confidence', 'priority-score']) {
-    const field = idea.fields.find((field) => field.key === key);
-    assert.equal(field.type, 'number');
-    assert.notEqual(field.required, true, 'unknown scores must remain absent, not fabricated');
-  }
-  assert.equal(app.inputs.find((input) => input.key === 'sender')?.required, false);
-  assert.equal(app.inputs.some((input) => /csv|password|token|credential|lead-list/.test(input.key)), false);
-  assert.equal(app.sources.length, 12);
-  assert.deepEqual(app.sources.find((source) => source.key === 'n8n-search'), {
-    key: 'n8n-search', label: 'Public n8n Community discussion search',
-    url: 'https://community.n8n.io/search/query', queryParam: 'term',
-  });
-  for (const [key, prefix] of [['n8n-topics', '/t/'], ['n8n-guidelines', '/guidelines'], ['n8n-workflows', '/workflows/'], ['reddit-threads', '/r/'], ['github-repos', '/repos/']]) {
-    assert.equal(app.sources.find((source) => source.key === key)?.pathPrefix, prefix);
-  }
-  assert.deepEqual(readdirSync(new URL('apps/marketing-operations/', root)), ['app.json']);
-  assert.equal(app.records, undefined);
-  assert.equal(app.schedules, undefined);
-  assert.match(app.task, /generated HN comments as sendable action drafts/);
-  assert.match(app.review, /Approval is not delivery/);
 });

@@ -8,13 +8,20 @@ storage, permissions and human decisions. No app imports the desktop's internals
 
 | App | Result | Scope |
 |---|---|---|
-| [Opportunity Scout](apps/opportunity-scout/app.json) | Source-backed public demand signals and appropriate next steps | Hacker News search initially; never requires an uploaded lead CSV |
+| [Workflow Discovery](apps/workflow-discovery/app.json) | Real public examples of one recurring job, compared across up to three groups | Research only; HN, n8n, Stack Overflow and Reddit |
+| [Help Requests](apps/help-requests/app.json) | Useful, disclosed answers to people already asking for help | Queues answers only on n8n Community after reading its guidelines; HN, Stack Overflow and Reddit stay briefs |
+| [Warm Invitations](apps/warm-invitations/app.json) | Short personal invitations about one real task | Only contacts you list; no public sources |
+| [Creator Outreach](apps/creator-outreach/app.json) | Small creators and niche publications, plus a pitch once there is a real story | DEV and HN research; contact routes only from a creator's own profile |
+| [Directory Listings](apps/directory-listings/app.json) | Curated GitHub lists that fit, their rules, and the exact entry | GitHub search, repository details and raw contribution files |
 | [Portfolio Review](apps/portfolio-review/app.json) | Recommendations using the shared goal, results and approval backlog | Read access to other app results in the same workspace; no automatic reallocations |
-| [Marketing Operations](apps/marketing-operations/app.json) | Ranked practical ideas, source-backed opportunities, campaign records and exact drafts | v2 typed records; scoped HN/n8n research, one bounded job, no private seed data or connected sending channel |
 
 These are research/draft-first previews, not a working email sender, paid ad
 manager, autonomous sales department or a claim of paying customers. No
 campaigns, schedules, public messages or paid services are activated by installing.
+
+Each marketing app runs one experiment and nothing else; Portfolio Review says
+which to keep. A process template can't leave its team, so to share one with
+anyone else, rewrite it as an app here.
 
 ## Use inside Bees
 
@@ -54,7 +61,7 @@ are credential-free HTTPS GETs; no redirects or private-network destinations.
 - v1 and v2 are declarative JSON: no JavaScript hooks, shell access, arbitrary MCP
   tools, signed-in browsers, private team-folder access or automatic tool installation.
   v2 adds primitive record schemas and declared-origin public page reads; it does
-  not grant unrestricted browsing or sending. See the [marketing guide](docs/marketing-operations.md).
+  not grant unrestricted browsing or sending.
 - Results and source receipts persist across runs. Record keys deduplicate within
   an installation. Active action destinations and suppressions are checked across
   the workspace. Identity resolution across different URLs/emails is not inferred.
@@ -93,7 +100,7 @@ BEES_DESKTOP_DIR=/absolute/path/to/bees-desktop npm run check
 ```
 
 The second command additionally checks packages against the actual desktop
-validator and runs an in-memory Marketing Operations host smoke test. The latter
+validator and runs an in-memory Help Requests host smoke test. The latter
 uses the actual manifest, native agents/process/work records and import/query
 paths, with model execution and public reads stubbed out; it creates no live
 workspace, schedule or action. The sibling desktop's dependencies must already
