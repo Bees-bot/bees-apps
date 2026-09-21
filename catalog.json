@@ -2,10 +2,239 @@
   "schemaVersion": 1,
   "apps": [
     {
-      "id": "opportunity-scout",
-      "version": "0.1.1",
-      "name": "Opportunity Scout",
-      "description": "Find public demand signals for your product, explain the evidence, and prepare a useful next step. Starts with Hacker News discussions; no lead CSV required.",
+      "id": "workflow-discovery",
+      "version": "0.1.0",
+      "name": "Workflow Discovery",
+      "description": "Find people doing the same annoying recurring job and compare which group is worth talking to. Research only: saves real public examples and a two-week hypothesis, never contacts anyone.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "public-sources"
+      ],
+      "sources": [
+        {
+          "key": "hn-search",
+          "label": "Hacker News story and Ask HN search, via Algolia",
+          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10&attributesToRetrieve=objectID,title,story_text,author,created_at,num_comments&attributesToHighlight=none",
+          "queryParam": "query"
+        },
+        {
+          "key": "hn-discussion",
+          "label": "Original Hacker News discussions",
+          "url": "https://news.ycombinator.com",
+          "type": "page",
+          "pathPrefix": "/item"
+        },
+        {
+          "key": "n8n-search",
+          "label": "n8n Community search",
+          "url": "https://community.n8n.io/search/query",
+          "queryParam": "term"
+        },
+        {
+          "key": "n8n-topics",
+          "label": "Original n8n Community topics",
+          "url": "https://community.n8n.io",
+          "type": "page",
+          "pathPrefix": "/t/"
+        },
+        {
+          "key": "stack-search",
+          "label": "Stack Overflow question search",
+          "url": "https://api.stackexchange.com/2.3/search/advanced?site=stackoverflow&pagesize=10&order=desc&sort=activity",
+          "queryParam": "q"
+        },
+        {
+          "key": "reddit-search",
+          "label": "Reddit search feed",
+          "url": "https://www.reddit.com/search.rss?sort=new&limit=6",
+          "queryParam": "q"
+        },
+        {
+          "key": "reddit-threads",
+          "label": "Original Reddit threads",
+          "url": "https://www.reddit.com",
+          "type": "page",
+          "pathPrefix": "/r/"
+        }
+      ],
+      "schemaVersion": 2,
+      "recordTypes": [
+        {
+          "key": "group",
+          "label": "Workflow groups",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Exploring, promising or weak",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "audience",
+              "label": "Who is in the group",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "recurring-task",
+              "label": "The recurring task",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "independent-examples",
+              "label": "Distinct people with recent similar pain",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "reachability",
+              "label": "Where they can be reached",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "capability-fit",
+              "label": "What the product can really do for them",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "hypothesis",
+              "label": "Two-week hypothesis and small trial",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "candidate",
+          "label": "Real public examples",
+          "fields": [
+            {
+              "key": "status",
+              "label": "New, reviewed or discarded",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "group-key",
+              "label": "Group key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "canonical-url",
+              "label": "Original public post",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "source-date",
+              "label": "Post date or unknown",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "observed-at",
+              "label": "When it was read",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "recent-task",
+              "label": "The task they described",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "pain-evidence",
+              "label": "Their words, short quote",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "capability-fit",
+              "label": "Could the product help, and how",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "reachability",
+              "label": "How to reach them in the same venue",
+              "type": "text"
+            },
+            {
+              "key": "uncertainty",
+              "label": "What is not verified",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "next-action",
+              "label": "Specific next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "research-summary",
+          "label": "Run summaries",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completed, partial or blocked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "query-set",
+              "label": "Actual queries",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "new-candidates",
+              "label": "New candidates saved",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "stop-reason",
+              "label": "Why the run stopped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "blockers",
+              "label": "Failed sources or missing information",
+              "type": "text"
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest useful next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "path": "packages/3683ffc202709cc3abaee20d053f304a246435f2690c8ece755b1cc3e88e88da.json",
+      "sha256": "3683ffc202709cc3abaee20d053f304a246435f2690c8ece755b1cc3e88e88da"
+    },
+    {
+      "id": "help-requests",
+      "version": "0.1.0",
+      "name": "Help Requests",
+      "description": "Find people already asking for help with a problem your product solves and prepare a useful, honest answer. Drafts replies only where the venue's rules were read; every reply waits for your approval.",
       "author": "Bees",
       "license": "UNLICENSED",
       "permissions": [
@@ -14,15 +243,846 @@
       ],
       "sources": [
         {
+          "key": "n8n-search",
+          "label": "n8n Community search",
+          "url": "https://community.n8n.io/search/query",
+          "queryParam": "term"
+        },
+        {
+          "key": "n8n-topics",
+          "label": "Original n8n Community topics",
+          "url": "https://community.n8n.io",
+          "type": "page",
+          "pathPrefix": "/t/"
+        },
+        {
+          "key": "n8n-guidelines",
+          "label": "n8n Community guidelines",
+          "url": "https://community.n8n.io",
+          "type": "page",
+          "pathPrefix": "/guidelines"
+        },
+        {
+          "key": "stack-search",
+          "label": "Stack Overflow question search",
+          "url": "https://api.stackexchange.com/2.3/search/advanced?site=stackoverflow&pagesize=10&order=desc&sort=activity",
+          "queryParam": "q"
+        },
+        {
           "key": "hn-search",
-          "label": "Hacker News search, powered by Algolia",
-          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10",
+          "label": "Hacker News story and Ask HN search, via Algolia",
+          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10&attributesToRetrieve=objectID,title,story_text,author,created_at,num_comments&attributesToHighlight=none",
+          "queryParam": "query"
+        },
+        {
+          "key": "hn-discussion",
+          "label": "Original Hacker News discussions",
+          "url": "https://news.ycombinator.com",
+          "type": "page",
+          "pathPrefix": "/item"
+        },
+        {
+          "key": "reddit-search",
+          "label": "Reddit search feed",
+          "url": "https://www.reddit.com/search.rss?sort=new&limit=6",
+          "queryParam": "q"
+        },
+        {
+          "key": "reddit-threads",
+          "label": "Original Reddit threads",
+          "url": "https://www.reddit.com",
+          "type": "page",
+          "pathPrefix": "/r/"
+        }
+      ],
+      "schemaVersion": 2,
+      "recordTypes": [
+        {
+          "key": "request",
+          "label": "Help requests",
+          "fields": [
+            {
+              "key": "status",
+              "label": "New, answer-drafted, research-only or skipped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "venue",
+              "label": "n8n, stackoverflow, reddit or hn",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "canonical-url",
+              "label": "Original thread",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "source-date",
+              "label": "Question date or unknown",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "observed-at",
+              "label": "When it was read",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "question",
+              "label": "What they actually asked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "fit",
+              "label": "Why an answer would really help",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "rules-url",
+              "label": "Rules read this run",
+              "type": "text"
+            },
+            {
+              "key": "uncertainty",
+              "label": "What is not verified",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "next-action",
+              "label": "Specific next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "answer",
+          "label": "Answer drafts",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Queued, needs-checks or brief",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "request-key",
+              "label": "Request key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact thread URL",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "sender",
+              "label": "Configured sender",
+              "type": "text"
+            },
+            {
+              "key": "disclosure",
+              "label": "How affiliation is stated",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "claims-checked",
+              "label": "Product claims and what they rest on",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "manual-steps",
+              "label": "Exact steps to post after approval",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "assumptions",
+              "label": "Checks still needed",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "action-reference",
+          "label": "Queued actions",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Observed native status, never authorization",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "request-key",
+              "label": "Request key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact destination",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "research-summary",
+          "label": "Run summaries",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completed, partial or blocked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "query-set",
+              "label": "Actual queries",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "new-requests",
+              "label": "New requests saved",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "stop-reason",
+              "label": "Why the run stopped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "blockers",
+              "label": "Failed sources or missing information",
+              "type": "text"
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest useful next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "path": "packages/6d577f24b5a6f9b9f086debbb55adea7b162760ab7c9f6af2cbe3b8d9b781d97.json",
+      "sha256": "6d577f24b5a6f9b9f086debbb55adea7b162760ab7c9f6af2cbe3b8d9b781d97"
+    },
+    {
+      "id": "warm-invitations",
+      "version": "0.1.0",
+      "name": "Warm Invitations",
+      "description": "Write short personal invitations to people who already know you, each about one real task they do. Uses only the contacts you list; every message waits for your approval.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "draft-actions"
+      ],
+      "sources": [],
+      "schemaVersion": 2,
+      "recordTypes": [
+        {
+          "key": "invitation",
+          "label": "Invitations",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Queued, needs-checks or skipped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "contact-key",
+              "label": "Contact key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "channel",
+              "label": "Channel",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact address",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "relationship",
+              "label": "How you know them, as supplied",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "relevance",
+              "label": "Why this task matters to them, as supplied",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "follow-up",
+              "label": "One optional follow-up, after a week without reply",
+              "type": "text"
+            },
+            {
+              "key": "assumptions",
+              "label": "Checks still needed",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "action-reference",
+          "label": "Queued actions",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Observed native status, never authorization",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "contact-key",
+              "label": "Contact key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact destination",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "outcome",
+          "label": "Observed outcomes",
+          "fields": [
+            {
+              "key": "contact-key",
+              "label": "Contact key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID if any",
+              "type": "text"
+            },
+            {
+              "key": "event",
+              "label": "What happened",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "observed-at",
+              "label": "When",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "verification",
+              "label": "Verified, self-reported or unknown",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "batch-summary",
+          "label": "Run summaries",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completed, partial or blocked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "queued",
+              "label": "Invitations queued",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "skipped",
+              "label": "Who was skipped and why",
+              "type": "text"
+            },
+            {
+              "key": "stop-reason",
+              "label": "Why the run stopped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest useful next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "path": "packages/abb69cea098588cf114e7982e1999a62fe05d48d05a0868eca5e1a21107a598f.json",
+      "sha256": "abb69cea098588cf114e7982e1999a62fe05d48d05a0868eca5e1a21107a598f"
+    },
+    {
+      "id": "creator-outreach",
+      "version": "0.1.0",
+      "name": "Creator Outreach",
+      "description": "Find small technical creators and niche publications that cover your problem space, and prepare a short honest pitch once you have a real story. Researches DEV and Hacker News; every pitch waits for your approval.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "public-sources",
+        "draft-actions"
+      ],
+      "sources": [
+        {
+          "key": "devto-articles",
+          "label": "Recent DEV articles by tag",
+          "url": "https://dev.to/api/articles?per_page=10&top=60",
+          "queryParam": "tag"
+        },
+        {
+          "key": "devto-api",
+          "label": "DEV public profiles, organizations and articles",
+          "url": "https://dev.to",
+          "type": "page",
+          "pathPrefix": "/api/"
+        },
+        {
+          "key": "hn-search",
+          "label": "Hacker News story search, via Algolia",
+          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10&attributesToRetrieve=objectID,title,url,author,created_at,points,num_comments&attributesToHighlight=none",
           "queryParam": "query"
         }
       ],
-      "schemaVersion": 1,
-      "path": "packages/81f60e0a79cdbf54833269ee0f04ee887a701f75173e039dc799893b9e09f35a.json",
-      "sha256": "81f60e0a79cdbf54833269ee0f04ee887a701f75173e039dc799893b9e09f35a"
+      "schemaVersion": 2,
+      "recordTypes": [
+        {
+          "key": "creator",
+          "label": "Creators and publications",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Candidate, good-fit, poor-fit or pitched",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "kind",
+              "label": "Creator or publication",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "profile-url",
+              "label": "Public profile or site",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "audience-fit",
+              "label": "Why their readers care about this problem",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "recent-work",
+              "label": "Recent relevant pieces with dates",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "contact-route",
+              "label": "Public contact route from their own profile",
+              "type": "text"
+            },
+            {
+              "key": "uncertainty",
+              "label": "What is not verified",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "next-action",
+              "label": "Specific next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "pitch",
+          "label": "Pitch drafts",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Queued or needs-checks",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "creator-key",
+              "label": "Creator key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact contact route",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "sender",
+              "label": "Configured sender",
+              "type": "text"
+            },
+            {
+              "key": "story-claims",
+              "label": "Claims made and what they rest on",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "manual-steps",
+              "label": "Exact steps to send after approval",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "assumptions",
+              "label": "Checks still needed",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "action-reference",
+          "label": "Queued actions",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Observed native status, never authorization",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "creator-key",
+              "label": "Creator key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact destination",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "research-summary",
+          "label": "Run summaries",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completed, partial or blocked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "query-set",
+              "label": "Actual queries",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "new-creators",
+              "label": "New creators saved",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "stop-reason",
+              "label": "Why the run stopped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "blockers",
+              "label": "Failed sources or missing information",
+              "type": "text"
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest useful next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "path": "packages/c6a8b64c8ec9959c6e31ea7f713d0076539b958dbacdf308842ad16e8a9a80ca.json",
+      "sha256": "c6a8b64c8ec9959c6e31ea7f713d0076539b958dbacdf308842ad16e8a9a80ca"
+    },
+    {
+      "id": "directory-listings",
+      "version": "0.1.0",
+      "name": "Directory Listings",
+      "description": "Find curated GitHub lists where your product genuinely belongs, read each list's contribution rules, and prepare the exact entry and pull request text for your approval.",
+      "author": "Bees",
+      "license": "UNLICENSED",
+      "permissions": [
+        "public-sources",
+        "draft-actions"
+      ],
+      "sources": [
+        {
+          "key": "github-search",
+          "label": "GitHub repository search",
+          "url": "https://api.github.com/search/repositories?per_page=5&sort=stars",
+          "queryParam": "q"
+        },
+        {
+          "key": "github-api",
+          "label": "GitHub public repository details",
+          "url": "https://api.github.com",
+          "type": "page",
+          "pathPrefix": "/repos/"
+        },
+        {
+          "key": "github-raw",
+          "label": "Raw files from public GitHub repositories",
+          "url": "https://raw.githubusercontent.com",
+          "type": "page",
+          "pathPrefix": "/"
+        }
+      ],
+      "schemaVersion": 2,
+      "recordTypes": [
+        {
+          "key": "directory",
+          "label": "Lists",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Fits, poor-fit, already-listed or blocked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "repo",
+              "label": "OWNER/NAME",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "stars",
+              "label": "Stars when read",
+              "type": "number"
+            },
+            {
+              "key": "last-push",
+              "label": "Last push date",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "section",
+              "label": "Section the entry belongs in",
+              "type": "text"
+            },
+            {
+              "key": "rules-url",
+              "label": "Contribution rules read",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "rules-summary",
+              "label": "Rules that apply to this entry",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "fit",
+              "label": "Why the product belongs here, or not",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "next-action",
+              "label": "Specific next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "entry",
+          "label": "Entry drafts",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Queued or needs-checks",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "directory-key",
+              "label": "List key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Repository to open the pull request on",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "sender",
+              "label": "Configured GitHub account",
+              "type": "text"
+            },
+            {
+              "key": "entry-line",
+              "label": "Exact line to add",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "manual-steps",
+              "label": "Exact steps after approval",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "assumptions",
+              "label": "Checks still needed",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "action-reference",
+          "label": "Queued actions",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Observed native status, never authorization",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "action-id",
+              "label": "Native action ID",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "directory-key",
+              "label": "List key",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "destination",
+              "label": "Exact destination",
+              "type": "text",
+              "required": true
+            }
+          ]
+        },
+        {
+          "key": "research-summary",
+          "label": "Run summaries",
+          "fields": [
+            {
+              "key": "status",
+              "label": "Completed, partial or blocked",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "query-set",
+              "label": "Actual queries",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "lists-checked",
+              "label": "Lists fully checked",
+              "type": "number",
+              "required": true
+            },
+            {
+              "key": "stop-reason",
+              "label": "Why the run stopped",
+              "type": "text",
+              "required": true
+            },
+            {
+              "key": "blockers",
+              "label": "Failed sources or missing information",
+              "type": "text"
+            },
+            {
+              "key": "next-step",
+              "label": "Smallest useful next step",
+              "type": "text",
+              "required": true
+            }
+          ]
+        }
+      ],
+      "path": "packages/0d2206629a14c1f3cec8d02dcee3be699a545d9ba7e33285d3051d219b5cb046.json",
+      "sha256": "0d2206629a14c1f3cec8d02dcee3be699a545d9ba7e33285d3051d219b5cb046"
     },
     {
       "id": "portfolio-review",
@@ -38,552 +1098,6 @@
       "schemaVersion": 1,
       "path": "packages/66abc3f42d188f38d9732ac649b36352ecc5647745e762ccc62c507edbb0c1a1.json",
       "sha256": "66abc3f42d188f38d9732ac649b36352ecc5647745e762ccc62c507edbb0c1a1"
-    },
-    {
-      "id": "marketing-operations",
-      "version": "0.2.3",
-      "name": "Marketing Operations",
-      "description": "Run a small, evidence-backed marketing portfolio: explain and rank ideas, source real opportunities, organize campaigns and prepare exact actions for human approval. Researches Reddit, Hacker News, Stack Overflow, GitHub and n8n practitioner discussions; never requires a lead CSV.",
-      "author": "Bees",
-      "license": "UNLICENSED",
-      "permissions": [
-        "public-sources",
-        "draft-actions"
-      ],
-      "sources": [
-        {
-          "key": "hn-search",
-          "label": "Public Hacker News search via Algolia",
-          "url": "https://hn.algolia.com/api/v1/search_by_date?tags=story&hitsPerPage=10&attributesToRetrieve=objectID,title,url,author,created_at,points,num_comments&attributesToHighlight=none",
-          "queryParam": "query"
-        },
-        {
-          "key": "hn-discussion",
-          "label": "Original Hacker News discussion pages",
-          "url": "https://news.ycombinator.com",
-          "type": "page",
-          "pathPrefix": "/item"
-        },
-        {
-          "key": "hn-rules",
-          "label": "Hacker News participation guidelines",
-          "url": "https://news.ycombinator.com",
-          "type": "page",
-          "pathPrefix": "/newsguidelines.html"
-        },
-        {
-          "key": "bees-pricing",
-          "label": "Bees public pricing and cost limitations",
-          "url": "https://bees.bot",
-          "type": "page",
-          "pathPrefix": "/pricing/"
-        },
-        {
-          "key": "n8n-search",
-          "label": "Public n8n Community discussion search",
-          "url": "https://community.n8n.io/search/query",
-          "queryParam": "term"
-        },
-        {
-          "key": "n8n-topics",
-          "label": "Original public n8n Community topics",
-          "url": "https://community.n8n.io",
-          "type": "page",
-          "pathPrefix": "/t/"
-        },
-        {
-          "key": "n8n-guidelines",
-          "label": "n8n Community participation guidelines",
-          "url": "https://community.n8n.io",
-          "type": "page",
-          "pathPrefix": "/guidelines"
-        },
-        {
-          "key": "n8n-workflows",
-          "label": "Public n8n workflow descriptions and author attribution",
-          "url": "https://n8n.io",
-          "type": "page",
-          "pathPrefix": "/workflows/"
-        },
-        {
-          "key": "reddit-search",
-          "label": "Public Reddit search feed",
-          "url": "https://www.reddit.com/search.rss?sort=new&limit=10",
-          "queryParam": "q"
-        },
-        {
-          "key": "reddit-threads",
-          "label": "Original public Reddit threads",
-          "url": "https://www.reddit.com",
-          "type": "page",
-          "pathPrefix": "/r/"
-        },
-        {
-          "key": "stack-search",
-          "label": "Public Stack Overflow question search",
-          "url": "https://api.stackexchange.com/2.3/search/advanced?site=stackoverflow&pagesize=10&order=desc&sort=activity",
-          "queryParam": "q"
-        },
-        {
-          "key": "github-repos",
-          "label": "Public GitHub repository issues and comments",
-          "url": "https://api.github.com",
-          "type": "page",
-          "pathPrefix": "/repos/"
-        }
-      ],
-      "schemaVersion": 2,
-      "recordTypes": [
-        {
-          "key": "campaign",
-          "label": "Campaigns",
-          "fields": [
-            {
-              "key": "status",
-              "label": "Status",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "category",
-              "label": "Acquisition or activation",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "objective",
-              "label": "Useful outcome",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "audience",
-              "label": "Audience hypothesis",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "channel",
-              "label": "Channel",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "source-plan",
-              "label": "Where and how to source",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "qualification",
-              "label": "Who qualifies and why",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "offer",
-              "label": "Appropriate next step",
-              "type": "text"
-            },
-            {
-              "key": "success-metric",
-              "label": "Success measure",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "stop-rule",
-              "label": "Stop or reconsider when",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "idea-key",
-              "label": "Originating idea key",
-              "type": "text"
-            },
-            {
-              "key": "review-date",
-              "label": "Review date",
-              "type": "text"
-            },
-            {
-              "key": "weekly-minutes",
-              "label": "Estimated weekly human minutes",
-              "type": "number"
-            }
-          ]
-        },
-        {
-          "key": "opportunity",
-          "label": "Opportunities",
-          "fields": [
-            {
-              "key": "status",
-              "label": "Status",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "role",
-              "label": "Buyer, practitioner, creator or adjacent vendor",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "canonical-url",
-              "label": "Original public source",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "source-date",
-              "label": "Source date or unknown",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "observed-at",
-              "label": "Research observation time",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "evidence-summary",
-              "label": "What was actually observed",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "qualification",
-              "label": "Fit and buying intent",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "uncertainty",
-              "label": "What remains unverified",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "campaign-key",
-              "label": "Campaign key",
-              "type": "text"
-            },
-            {
-              "key": "next-action",
-              "label": "Specific next step",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "contact-route",
-              "label": "Verified appropriate contact route",
-              "type": "text"
-            },
-            {
-              "key": "rules-url",
-              "label": "Checked participation rules",
-              "type": "text"
-            },
-            {
-              "key": "identity-key",
-              "label": "Evidence-backed identity key",
-              "type": "text"
-            }
-          ]
-        },
-        {
-          "key": "idea",
-          "label": "Ideas and priorities",
-          "fields": [
-            {
-              "key": "status",
-              "label": "Proposed, active, parked or needs clarification",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "eli5",
-              "label": "Explain it simply",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "source-plan",
-              "label": "Where the next real prospect comes from",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "manual-steps",
-              "label": "How to do it manually",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "bees-prompt",
-              "label": "Bounded Ask Bees prompt",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "automation-mode",
-              "label": "Available automation and missing capabilities",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "open-source-option",
-              "label": "Optional code or open-source alternative",
-              "type": "text"
-            },
-            {
-              "key": "speed-score",
-              "label": "Speed 1–5, higher is faster",
-              "type": "number"
-            },
-            {
-              "key": "cost-score",
-              "label": "Affordability 1–5, higher is cheaper",
-              "type": "number"
-            },
-            {
-              "key": "value-score",
-              "label": "Expected useful value 1–5",
-              "type": "number"
-            },
-            {
-              "key": "confidence",
-              "label": "Evidence confidence 0–1",
-              "type": "number"
-            },
-            {
-              "key": "priority-score",
-              "label": "Confidence-adjusted priority 0–100",
-              "type": "number"
-            },
-            {
-              "key": "score-rationale",
-              "label": "Assumptions behind the scores",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "dependencies",
-              "label": "Missing information and prerequisites",
-              "type": "text"
-            },
-            {
-              "key": "success-metric",
-              "label": "What we will measure",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "campaign-key",
-              "label": "Campaign key if selected",
-              "type": "text"
-            },
-            {
-              "key": "effort-minutes",
-              "label": "Estimated initial human minutes",
-              "type": "number"
-            },
-            {
-              "key": "external-cost-cents",
-              "label": "Estimated new external cost in USD cents",
-              "type": "number"
-            }
-          ]
-        },
-        {
-          "key": "content",
-          "label": "Content and conversation drafts",
-          "fields": [
-            {
-              "key": "status",
-              "label": "Draft or needs checks",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "campaign-key",
-              "label": "Campaign key",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "opportunity-key",
-              "label": "Opportunity key if targeted",
-              "type": "text"
-            },
-            {
-              "key": "channel",
-              "label": "Channel",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "destination",
-              "label": "Proposed destination",
-              "type": "text"
-            },
-            {
-              "key": "sender",
-              "label": "Existing sender",
-              "type": "text"
-            },
-            {
-              "key": "content-type",
-              "label": "Reply, interview request, article or other",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "manual-steps",
-              "label": "Exact manual execution steps after approval",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "assumptions",
-              "label": "Checks still needed before use",
-              "type": "text",
-              "required": true
-            }
-          ]
-        },
-        {
-          "key": "action-reference",
-          "label": "Native action references",
-          "fields": [
-            {
-              "key": "status",
-              "label": "Observed native action status, never authorization",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "action-id",
-              "label": "Native action ID",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "campaign-key",
-              "label": "Campaign key",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "opportunity-key",
-              "label": "Opportunity key",
-              "type": "text"
-            },
-            {
-              "key": "content-key",
-              "label": "Content key",
-              "type": "text"
-            },
-            {
-              "key": "destination",
-              "label": "Exact destination",
-              "type": "text",
-              "required": true
-            }
-          ]
-        },
-        {
-          "key": "outcome",
-          "label": "Observed outcomes",
-          "fields": [
-            {
-              "key": "campaign-key",
-              "label": "Campaign key",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "action-id",
-              "label": "Native action ID if applicable",
-              "type": "text"
-            },
-            {
-              "key": "event",
-              "label": "Observed event",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "observed-at",
-              "label": "Event observation time",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "evidence-url",
-              "label": "Evidence location if available",
-              "type": "text"
-            },
-            {
-              "key": "value",
-              "label": "Measured value if known",
-              "type": "number"
-            },
-            {
-              "key": "verification",
-              "label": "Verified, self-reported or unknown",
-              "type": "text",
-              "required": true
-            }
-          ]
-        },
-        {
-          "key": "research-summary",
-          "label": "Run summaries and blockers",
-          "fields": [
-            {
-              "key": "status",
-              "label": "Completed, partial or needs information",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "query-set",
-              "label": "Actual research queries",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "stop-reason",
-              "label": "Why this batch stopped",
-              "type": "text",
-              "required": true
-            },
-            {
-              "key": "new-opportunities",
-              "label": "New source-backed opportunities",
-              "type": "number",
-              "required": true
-            },
-            {
-              "key": "blockers",
-              "label": "Missing capability, information or evidence",
-              "type": "text"
-            },
-            {
-              "key": "next-step",
-              "label": "Smallest useful next step",
-              "type": "text",
-              "required": true
-            }
-          ]
-        }
-      ],
-      "path": "packages/def151457c471033be8be237bcca5b55ec7494d5d98bdce4b8db5b0b1bb8b17c.json",
-      "sha256": "def151457c471033be8be237bcca5b55ec7494d5d98bdce4b8db5b0b1bb8b17c"
     }
   ]
 }
