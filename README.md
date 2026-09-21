@@ -77,7 +77,7 @@ are credential-free HTTPS GETs; no redirects or private-network destinations.
 - Shared state uses revisioned snapshots capped at 16 MB. Conflicting edits ask
   the user to refresh/retry. Before that ceiling, source/history storage needs
   pagination; this preview is not intended for an unlimited lead database.
-- Removing an app requires paused schedules and finished/cancelled work. It
+- Removing an app pauses its schedules and needs finished/cancelled work. It
   archives its process, cancels pending action drafts and preserves records.
   Old processes cannot resume after reinstall/upgrade. No database downgrade is offered.
 - Directory refresh never changes an installation. **Approve update** reviews
@@ -114,12 +114,11 @@ SHA-256-addressed `dist/packages/*.json`. Only `first-party-preview` and
 `community-reviewed` entries are included. CI builds an `app-directory` artifact;
 it does **not** publish or deploy it. No app definitions are bundled in Bees Desktop.
 
-After the owner approves publication, host the artifact on static HTTPS storage.
-The proposed default URL is `https://bees-bot.github.io/bees-apps/catalog.json`;
-GitHub Pages is **not enabled by this change**. A different host can be selected
-with `BEES_APP_CATALOG_URL` when launching Bees. The repository is currently
-private and licensing is pending: resolve publication/licensing before exposing
-these packages. Do not assume the proposed URL is live.
+The directory is live at `https://bees-bot.github.io/bees-apps/catalog.json`.
+GitHub Pages serves it from the `codex/catalog-pages` branch. To publish, copy
+`dist/catalog.json` and `dist/packages/*.json` onto that branch and push; keep old
+package files. A different host can be selected with `BEES_APP_CATALOG_URL` when
+launching Bees. Licensing is still pending.
 
 Publish packages before the catalog, serve `catalog.json` with a short cache
 lifetime/revalidation, and keep historical checksum-addressed package files.
