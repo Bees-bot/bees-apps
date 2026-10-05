@@ -114,4 +114,4 @@ Shipping an app update only needs a new catalog. A new package format or host fe
 
 ## License
 
-A license has not been chosen yet, so these packages are not open source yet. `UNLICENSED` in `package.json` is not an open source license. The apps are a preview, not production ready.
+Bees apps are licensed under either the [MIT](LICENSE-MIT) or the [Apache 2.0](LICENSE-APACHE) license, at your option. An app's own `license` field still reads `UNLICENSED` until that app's next version ships. The apps are a preview, not production ready.
