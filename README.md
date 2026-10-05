@@ -5,7 +5,7 @@
 <h1 align="center">Bees Apps</h1>
 
 <p align="center">
-  Ready-made apps you can install from the Apps screen in Bees, plus the rules for building your own.
+  Ready-made apps for the Apps screen in Bees, plus the rules for building your own.
 </p>
 
 <p align="center">
@@ -28,7 +28,7 @@ These apps research and draft. They are not an email sender, an ad manager or a 
 
 ## Use inside Bees
 
-You need [Bees](https://bees.bot/download/) 0.2.0 or newer. Model access must already work in Bees.
+The Apps screen is hidden in Bees 0.2.0 while it gets finished, so these steps are for when it comes back. Model access must already work in Bees.
 
 1. Open a team workspace and go to **Apps**. For a connected team, you need to be signed in with access to that team.
 2. Pick an app. Check its publisher, version, access and sources, then click **Install**. You don't need GitHub or any files.
