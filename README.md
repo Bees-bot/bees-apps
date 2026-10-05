@@ -1,132 +1,115 @@
-# Bees Apps
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Bees-bot/bees-desktop/main/src-tauri/icons/icon.png" width="96" alt="Bees">
+</p>
 
-Installable, outcome-focused apps for Bees. This repository owns app definitions
-and the community contribution contract. Bees owns execution, scheduling, app
-storage, permissions and human decisions. No app imports the desktop's internals.
+<h1 align="center">Bees Apps</h1>
 
-## First apps
+<p align="center">
+  Ready-made apps you can install from the Apps screen in Bees, plus the rules for building your own.
+</p>
 
-| App | Result | Scope |
+<p align="center">
+  <a href="https://bees.bot">Bees</a> ·
+  <a href="https://bees.bot/download/">Download</a> ·
+  <a href="https://github.com/Bees-bot/bees-desktop">Desktop repo</a>
+</p>
+
+An app here is one JSON file. It describes a job, the inputs it needs, the public sources it may read and what a good result looks like. Bees does the rest: it runs the work, stores the results, handles permissions and asks a person before anything leaves the workspace. Apps never touch the desktop's internals.
+
+## Apps in this repo
+
+| App | What you get | Limits |
 |---|---|---|
-| [Opportunity Scout](apps/opportunity-scout/app.json) | Source-backed public demand signals and appropriate next steps | Hacker News search initially; never requires an uploaded lead CSV |
-| [Portfolio Review](apps/portfolio-review/app.json) | Recommendations using the shared goal, results and approval backlog | Read access to other app results in the same workspace; no automatic reallocations |
-| [Marketing Operations](apps/marketing-operations/app.json) | Ranked practical ideas, source-backed opportunities, campaign records and exact drafts | v2 typed records; scoped HN/n8n research, one bounded job, no private seed data or connected sending channel |
+| [Opportunity Scout](apps/opportunity-scout/app.json) | Public demand signals with sources, and sensible next steps | Searches Hacker News. Never asks for a lead CSV. |
+| [Portfolio Review](apps/portfolio-review/app.json) | Recommendations based on your shared goal, results and approval queue | Reads other apps' results in the same workspace. Never moves budgets on its own. |
+| [Marketing Operations](apps/marketing-operations/app.json) | Ranked ideas, sourced opportunities, campaign records and exact drafts | Scoped Hacker News and n8n research, one bounded job. No private seed data and no sending channel. |
 
-These are research/draft-first previews, not a working email sender, paid ad
-manager, autonomous sales department or a claim of paying customers. No
-campaigns, schedules, public messages or paid services are activated by installing.
+These apps research and draft. They are not an email sender, an ad manager or a sales team. Installing one starts no campaigns, schedules, public messages or paid services.
 
 ## Use inside Bees
 
-Requires the desktop app-platform implementation accompanying this repository.
-It is not yet in a published Bees release. A source checkout of Bees Desktop with
-the changes can build the client and run the app using its normal development steps.
+You need [Bees](https://bees.bot/download/) 0.2.0 or newer. Model access must already work in Bees.
 
-1. Open any team workspace in Bees and choose **Apps**. Connected teams require
-   the matching server update and a signed-in account with access to that team.
-2. Browse the dynamically downloaded directory. Inspect the publisher, version,
-   requested permissions and public-source endpoints, then click **Install**.
-   No JSON upload, Git checkout or GitHub login is required for users.
-3. Complete the app's short setup form. Installation creates native Bees agents,
-   a Work → Review → Done process, and workspace-scoped installation records.
-4. Click **Run once**. Inspect progress in the existing work screen and results in
-   Apps. Model access must already work in Bees; model costs are not included or capped.
-5. After a successful manual run, use Bees' existing schedule controls on the
-   work item. The machine and runtime must be available. Installation creates no schedules.
+1. Open a team workspace and go to **Apps**. For a connected team, you need to be signed in with access to that team.
+2. Pick an app. Check its publisher, version, access and sources, then click **Install**. You don't need GitHub or any files.
+3. Click **Finish setup** (or **Open** if the app needs no setup), fill in the short form and click **Save settings**. Installing creates Bees agents and a Work, Review, Done process for the app.
+4. Click **Run once**. Follow progress on the work screen. Results show up in Apps.
+5. To repeat it, add a schedule to the work item after a good run. Installing never creates schedules, and scheduled runs need your computer on.
 
-**Your approval queue lives in Apps.** Every draft includes destination, sender,
-exact content, rationale and proposed commitment. Independent review checks each
-exact action before the designated human can approve it. Approving records a
-48-hour decision, not delivery. The matching host has a generic claim/dispatch/
-receipt contract; no production sending channel or account is connected by an
-app package. Dispatch must recheck the approval digest, reviewer decision,
-expiry, scope, suppression and budget. Provider acceptance is not confirmed
-recipient delivery. Paid actions remain unavailable in these apps.
+Model costs are not included and not capped by the app.
 
-The portfolio starts at $0 external commitments, five new app work items per
-UTC day and at most five waiting drafts. One work item has at most 20 public
-source requests, including failed requests. These are operational bounds, not a
-hard cap on tokens, runtime duration or model-provider invoices. Source reads
-are credential-free HTTPS GETs; no redirects or private-network destinations.
+## Approvals
 
-## Boundaries and current limitations
+Your approval queue lives in Apps. Every draft shows the destination, the sender, the exact content, the reason and any money it commits.
 
-- v1 and v2 are declarative JSON: no JavaScript hooks, shell access, arbitrary MCP
-  tools, signed-in browsers, private team-folder access or automatic tool installation.
-  v2 adds primitive record schemas and declared-origin public page reads; it does
-  not grant unrestricted browsing or sending. See the [marketing guide](docs/marketing-operations.md).
-- Results and source receipts persist across runs. Record keys deduplicate within
-  an installation. Active action destinations and suppressions are checked across
-  the workspace. Identity resolution across different URLs/emails is not inferred.
-- Portfolio review is recommendations only. It does not start other apps or change budgets.
-- The USD commitment ledger reserves approved draft amounts atomically. Generic
-  action receipts are not provider charge reconciliation or payment collection.
-  No production delivery history exists merely because the app was installed.
-- Local workspace app data stays in SQLite. Connected workspace configuration,
-  results, source receipts, drafts, decisions and portfolio limits are stored on
-  the workspace server and cached on each authorized device. Do not put secrets
-  in configuration. Shared writes require connectivity and a matching server;
-  failed/conflicting writes are not accepted as local decisions.
-- Shared state uses revisioned snapshots capped at 16 MB. Conflicting edits ask
-  the user to refresh/retry. Before that ceiling, source/history storage needs
-  pagination; this preview is not intended for an unlimited lead database.
-- Removing an app requires paused schedules and finished/cancelled work. It
-  archives its process, cancels pending action drafts and preserves records.
-  Old processes cannot resume after reinstall/upgrade. No database downgrade is offered.
-- Directory refresh never changes an installation. **Approve update** reviews
-  new access explicitly, keeps results and matching configuration, cancels old
-  drafts and creates a new process with schedules off. New required fields need setup.
-- Apps may read only their own records unless `portfolio-read` is explicitly
-  granted at installation. That grant covers the selected workspace, not other customers.
-- Hacker News results are source evidence, not verified buyers or permission to
-  contact people. HN prohibits generated and AI-edited comments, so these apps use
-  it for research, not AI-authored replies. Other communities' unchecked rules
-  keep their results as research briefs, not ready-to-send drafts.
+- A separate reviewer checks each action before the named person can approve it.
+- Approving records a decision that lasts 48 hours. It does not send anything.
+- No app package connects a sending channel or account. Only a separately tested connector in Bees can carry out an approved action.
+- Before sending, Bees checks the approval again: content, reviewer decision, expiry, scope, suppression list and budget.
+- A provider accepting a message does not prove it was delivered.
+- Paid actions are not available in these apps.
 
-## Development and contributions
+## Limits
 
-No npm dependencies are needed for the catalog checks:
+- Apps start with $0 of outside commitments.
+- All apps together get 5 new work items per day (UTC), and at most 5 drafts waiting for approval.
+- One work item can make at most 20 source requests, failed ones included.
+- These limits do not cap tokens, run time or your model bill.
+- Sources are read with plain HTTPS GET requests. No logins, no redirects, no private network addresses.
+
+## What apps can't do
+
+- Apps are plain JSON. No JavaScript, shell access, arbitrary tools, signed-in browsers, private team folders or automatic installs.
+- Version 2 packages can define simple record types and read public pages from the sites they declare. That is still not open browsing or sending. See the [marketing guide](docs/marketing-operations.md).
+- An app reads only its own records, unless you grant `portfolio-read` when installing. That grant covers the one workspace.
+- Portfolio Review only recommends. It doesn't start other apps or change budgets.
+- Hacker News results are evidence, not verified buyers or permission to contact anyone. Hacker News bans AI-written comments, so these apps never draft replies there. Results from other communities stay research notes, not ready-to-send drafts.
+
+## Data
+
+- Results and source records stay across runs. Record keys stop duplicates within one install. Destinations and suppressions are checked across the whole workspace. Bees doesn't guess that two different URLs or emails are the same person.
+- Local workspaces keep app data in SQLite. Connected workspaces keep it on the workspace server, cached on each signed-in device.
+- Don't put secrets in app settings.
+- Shared changes need a connection and a server that supports apps. If two edits clash, Bees asks you to refresh and try again.
+- Shared state is capped at 16 MB, so this is not a place for a huge lead database.
+- The spending ledger reserves approved amounts. Its receipts are not billing records.
+
+## Updates and removal
+
+- Refreshing the directory never changes an installed app.
+- **Approve update** shows any new access first. It keeps your results and matching settings, cancels old drafts and creates a new process with schedules off. New required fields need setup again.
+- **Remove app; keep data** works once schedules are paused and work is finished or cancelled. It archives the process, cancels pending drafts and keeps records.
+- Old processes can't resume after a reinstall or upgrade, and there is no database downgrade.
+
+## Develop and contribute
+
+The checks need no npm packages:
 
 ```sh
 npm run check
 BEES_DESKTOP_DIR=/absolute/path/to/bees-desktop npm run check
 ```
 
-The second command additionally checks packages against the actual desktop
-validator and runs an in-memory Marketing Operations host smoke test. The latter
-uses the actual manifest, native agents/process/work records and import/query
-paths, with model execution and public reads stubbed out; it creates no live
-workspace, schedule or action. The sibling desktop's dependencies must already
-be available. See [the app contract](docs/app-contract.md) and
-[contribution guide](CONTRIBUTING.md). No separate marketplace server is needed.
+The second line also checks packages against the real desktop validator and runs a Marketing Operations smoke test in memory. Model calls and source reads are stubbed, and nothing live is created. The desktop checkout needs its dependencies installed.
 
-## Build and host the dynamic directory
+Read [the app contract](docs/app-contract.md) and the [contribution guide](CONTRIBUTING.md) before opening a pull request.
 
-`npm run build:catalog` creates `dist/catalog.json` plus immutable,
-SHA-256-addressed `dist/packages/*.json`. Only `first-party-preview` and
-`community-reviewed` entries are included. CI builds an `app-directory` artifact;
-it does **not** publish or deploy it. No app definitions are bundled in Bees Desktop.
+## How the directory is published
 
-After the owner approves publication, host the artifact on static HTTPS storage.
-The proposed default URL is `https://bees-bot.github.io/bees-apps/catalog.json`;
-GitHub Pages is **not enabled by this change**. A different host can be selected
-with `BEES_APP_CATALOG_URL` when launching Bees. The repository is currently
-private and licensing is pending: resolve publication/licensing before exposing
-these packages. Do not assume the proposed URL is live.
+Bees reads the directory from `https://bees-bot.github.io/bees-apps/catalog.json`. GitHub Pages serves it from the `codex/catalog-pages` branch. That branch is updated by hand, so it can differ from `main`. To point Bees at another directory, set `BEES_APP_CATALOG_URL` when you launch it.
 
-Publish packages before the catalog, serve `catalog.json` with a short cache
-lifetime/revalidation, and keep historical checksum-addressed package files.
-Increment the app version whenever its content changes. The desktop refreshes
-on opening Apps or pressing Refresh, verifies package bytes and displayed
-metadata, then validates the declarative contract. A changed listing requires
-refresh and a new click. Offline cached listings are browse-only; installed
-local apps remain available. Connected app execution still needs the server.
+`npm run build:catalog` writes `dist/catalog.json` and one `dist/packages/*.json` file per app, named by its SHA-256 hash. Only `first-party-preview` and `community-reviewed` apps go in. CI builds this as an `app-directory` artifact but never deploys it.
 
-App updates need only a catalog publication, not a desktop release or server
-deployment. A new package schema or host capability may still require a Bees
-upgrade. Execution uses existing desktop workers; this does not add cloud workers.
+When publishing:
 
-Licensing is intentionally pending the owner's choice; `UNLICENSED` is not an
-open-source license. Do not publish these packages as open source until the
-selected license and notices are added. These packages remain a preview, not a
-production-ready release.
+- Upload package files before the catalog, and keep old package files.
+- Serve `catalog.json` with a short cache time.
+- Bump an app's version whenever its content changes.
+
+Bees fetches the directory when you open Apps or click **Refresh**. It checks each package's bytes and details, then validates it. Offline, the last directory can be browsed but not installed from. Installed local apps keep working. Connected apps still need the server.
+
+Shipping an app update only needs a new catalog. A new package format or host feature may need a newer Bees. Runs use your desktop, not cloud workers.
+
+## License
+
+A license has not been chosen yet, so these packages are not open source yet. `UNLICENSED` in `package.json` is not an open source license. The apps are a preview, not production ready.
