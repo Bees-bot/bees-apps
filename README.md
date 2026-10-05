@@ -24,6 +24,8 @@ An app here is one JSON file. It describes a job, the inputs it needs, the publi
 | [Portfolio Review](apps/portfolio-review/app.json) | Recommendations based on your shared goal, results and approval queue | Reads other apps' results in the same workspace. Never moves budgets on its own. |
 | [Marketing Operations](apps/marketing-operations/app.json) | Ranked ideas, sourced opportunities, campaign records and exact drafts | Scoped Hacker News and n8n research, one bounded job. No private seed data and no sending channel. |
 
+The live directory is published by hand, so it can list different apps than `main`.
+
 These apps research and draft. They are not an email sender, an ad manager or a sales team. Installing one starts no campaigns, schedules, public messages or paid services.
 
 ## Use inside Bees
