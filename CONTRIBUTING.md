@@ -16,9 +16,7 @@ Start from a complete customer job, not an agent title or a single marketing tac
 6. Open a pull request with screenshots, the tested Bees version, source terms,
    model/cost observations, data destinations, limitations and a support owner.
 
-The repository license decision is pending. Do not submit or redistribute code
-under assumed terms; specify your proposed license and wait for the published
-contribution policy before acceptance.
+Contributions are accepted under the repository license, MIT OR Apache-2.0.
 
 ## Maintainer review
 
