@@ -1,0 +1,24 @@
+{
+  "name": "Email replies with approval",
+  "workflow": [
+    {
+      "name": "Find emails",
+      "kind": "work",
+      "instructions": "Find emails that need a reply. Use a connected mail add-on if there is one, otherwise ask the person to paste them. For each one, read the earlier conversation with the same sender. List each email with its sender, subject and what it asks for in outputs/emails.md. Do not send anything."
+    },
+    {
+      "name": "Draft replies",
+      "kind": "work",
+      "instructions": "Read outputs/emails.md and draft a reply to each email in outputs/drafts.md. Show the person each draft and ask them to approve it, change it or skip it, and revise until they approve or skip. Do not send anything. End with a list of the approved drafts."
+    },
+    {
+      "name": "Approve sending",
+      "kind": "approval"
+    },
+    {
+      "name": "Send replies",
+      "kind": "work",
+      "instructions": "Read outputs/drafts.md and send only the drafts the person approved, through the connected mail add-on. Never send a draft they changed their mind on or skipped. If no mail add-on is connected, give the person the approved drafts to send themselves. Write what was sent to outputs/sent.md."
+    }
+  ]
+}

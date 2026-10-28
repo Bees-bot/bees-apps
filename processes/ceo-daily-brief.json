@@ -1,0 +1,15 @@
+{
+  "name": "CEO daily brief",
+  "workflow": [
+    {
+      "name": "Collect numbers",
+      "kind": "work",
+      "instructions": "Pull the latest numbers from the sources the person names, such as a sheet, a dashboard or a connected add-on. If no sources are named, ask the person which ones to use and which numbers matter. Add today's numbers with the date to the running table in outputs/daily-numbers.md, and keep earlier days."
+    },
+    {
+      "name": "Write brief",
+      "kind": "work",
+      "instructions": "Read outputs/daily-numbers.md and compare today with earlier days. Write a short brief to outputs/daily-brief.md: what changed, what looks off, and what needs the person's attention. Reply with the brief in five bullets or fewer. The person can put this thread on a schedule in its settings to get the brief every day."
+    }
+  ]
+}
