@@ -1,0 +1,20 @@
+{
+  "name": "News summary",
+  "workflow": [
+    {
+      "name": "Pick topics",
+      "kind": "work",
+      "instructions": "If the request does not name the topics, ask the person which ones they want, with these options: science, technology, business, finance, politics, sports, entertainment. Write the chosen topics to outputs/topics.md."
+    },
+    {
+      "name": "Read the news",
+      "kind": "work",
+      "instructions": "Read outputs/topics.md. For each topic, read today's news from at least three different news sources. Note each story with its source name and link in outputs/sources.md."
+    },
+    {
+      "name": "Summarize news",
+      "kind": "work",
+      "instructions": "Read outputs/sources.md. Write a short summary for each topic to outputs/news-summary.md, a few bullets per topic with a link to each story. Reply with the top story of each topic. The person can put this thread on a schedule in its settings to get the summary every day."
+    }
+  ]
+}

@@ -83,6 +83,31 @@ Your approval queue lives in Apps. Every draft shows the destination, the sender
 - **Remove app; keep data** works once schedules are paused and work is finished or cancelled. It archives the process, cancels pending drafts and keeps records.
 - Old processes can't resume after a reinstall or upgrade, and there is no database downgrade.
 
+## Processes
+
+A process is the list of stages a thread goes through, like Research, Draft, Review. The [processes](processes/) folder holds one JSON file per process. It starts with the ones built into Bees, and we want yours too.
+
+A process file looks like this:
+
+```json
+{
+  "name": "Fix a bug",
+  "description": "Optional one line on what it is for",
+  "workflow": [
+    { "name": "Reproduce", "kind": "work", "instructions": "Optional, what this stage should do" },
+    { "name": "Verify", "kind": "review" }
+  ]
+}
+```
+
+- A stage's `kind` is `work`, `review` (an independent check), `approval` (a person says yes before it goes on) or `chat`. A chat stage has to be the only stage.
+- A process has 1 to 12 stages. Stage names are up to 80 characters, and instructions up to 4000.
+- Agents and models are left out, because they only exist inside one team. Each team picks its own after importing.
+
+To add one, export it from Bees (**Team settings**, **Processes**, **Export**) or write the file by hand, then open a pull request with that one file in `processes/`. One process per pull request, please.
+
+To use one in Bees, open **Team settings**, **Processes**, click **Import process** and paste the file text or its raw link, like `https://raw.githubusercontent.com/Bees-bot/bees-apps/main/processes/fix-a-bug.json`. If Bees cannot open the link, open it in your browser and paste the text instead.
+
 ## Develop and contribute
 
 The checks need no npm packages:
