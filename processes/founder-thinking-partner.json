@@ -1,0 +1,20 @@
+{
+  "name": "Founder thinking partner",
+  "workflow": [
+    {
+      "name": "Understand the company",
+      "kind": "work",
+      "instructions": "Learn what the company does, its customers, its numbers and the founder's goals from the request and the shared files. Ask the person at most 5 short questions for what is missing. Write a short company summary to outputs/company.md."
+    },
+    {
+      "name": "Generate ideas",
+      "kind": "work",
+      "instructions": "Read outputs/company.md. Answer four questions: what is the founder not thinking of, how could the company grow 10x, how can the founder improve themself, and which new processes or markets to try. Rank the ideas under each question by impact, each with a short reason and a first step. Write them to outputs/ideas.md."
+    },
+    {
+      "name": "Challenge ideas",
+      "kind": "review",
+      "instructions": "Read outputs/company.md and outputs/ideas.md. Name any idea that is vague, does not fit the company, or is ranked too high, and say why."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Fix a bug",
+  "workflow": [
+    {
+      "name": "Reproduce",
+      "kind": "work"
+    },
+    {
+      "name": "Fix",
+      "kind": "work"
+    },
+    {
+      "name": "Verify",
+      "kind": "work"
+    }
+  ]
+}

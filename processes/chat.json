@@ -1,0 +1,9 @@
+{
+  "name": "Chat",
+  "workflow": [
+    {
+      "name": "Chat",
+      "kind": "chat"
+    }
+  ]
+}

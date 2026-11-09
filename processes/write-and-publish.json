@@ -1,0 +1,21 @@
+{
+  "name": "Write and publish",
+  "workflow": [
+    {
+      "name": "Outline",
+      "kind": "work"
+    },
+    {
+      "name": "Write",
+      "kind": "work"
+    },
+    {
+      "name": "Edit",
+      "kind": "work"
+    },
+    {
+      "name": "Publish",
+      "kind": "work"
+    }
+  ]
+}

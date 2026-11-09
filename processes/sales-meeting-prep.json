@@ -1,0 +1,20 @@
+{
+  "name": "Sales meeting prep",
+  "workflow": [
+    {
+      "name": "Find meetings",
+      "kind": "work",
+      "instructions": "Find the person's upcoming sales meetings. Use a connected calendar add-on if there is one, otherwise ask the person to paste the meetings. Write each meeting's time, company and attendees to outputs/meetings.md."
+    },
+    {
+      "name": "Research accounts",
+      "kind": "work",
+      "instructions": "Read outputs/meetings.md. For each company, research the company, its attendees, its main competitors and what those competitors are doing lately. Write the findings with links to outputs/research.md."
+    },
+    {
+      "name": "Talking points",
+      "kind": "work",
+      "instructions": "Read outputs/meetings.md and outputs/research.md. For each meeting, explain why the company needs Bees to stay competitive, then list talking points ranked by how likely each is to make the sale, with a one-line reason each. Write it to outputs/meeting-prep.md and reply with the top three points per meeting."
+    }
+  ]
+}

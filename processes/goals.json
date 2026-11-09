@@ -1,0 +1,13 @@
+{
+  "name": "Goals",
+  "workflow": [
+    {
+      "name": "Work",
+      "kind": "work"
+    },
+    {
+      "name": "Review",
+      "kind": "review"
+    }
+  ]
+}

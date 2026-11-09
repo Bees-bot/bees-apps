@@ -1,0 +1,17 @@
+{
+  "name": "Research and report",
+  "workflow": [
+    {
+      "name": "Research",
+      "kind": "work"
+    },
+    {
+      "name": "Draft",
+      "kind": "work"
+    },
+    {
+      "name": "Review",
+      "kind": "review"
+    }
+  ]
+}
